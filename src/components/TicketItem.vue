@@ -22,7 +22,7 @@
       </div>
       <div class="ticket_transfers">
         <div class="ticket_transfers --title">
-          {{ formatTransfer(ticket.segments[0].stops) }}
+          {{ formatTransfer(ticket.segments[0].stops.length) }}
         </div>
         <div class="ticket_transfers --time">
           {{ ticket.segments[0].stops.join(", ") }}
@@ -44,7 +44,7 @@
       </div>
       <div class="ticket_transfers">
         <div class="ticket_transfers --title">
-          {{ formatTransfer(ticket.segments[1].stops) }}
+          {{ formatTransfer(ticket.segments[1].stops.length) }}
         </div>
         <div class="ticket_transfers --time">
           {{ ticket.segments[1].stops.join(", ") }}
@@ -57,25 +57,16 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import { Tickets } from "@/types/ticketsTypes.interface";
-
+import { formatTransfer } from "@/services/helper";
 export default defineComponent({
   props: {
     ticket: {
-      type: [] as PropType<Tickets>,
+      type: Object as PropType<Tickets>,
+      required: true,
     },
   },
   methods: {
-    formatTransfer(stops: string | []) {
-      switch (stops.length) {
-        case 0:
-          return "Нет пересадок";
-        case 1:
-          return "1 пересадка";
-        default:
-          return `${stops.length} пересадки`;
-      }
-    },
-
+    formatTransfer,
     renderDate(date: string, duration: number) {
       const startTime = new Date(date);
       const endTime = new Date(

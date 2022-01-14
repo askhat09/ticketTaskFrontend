@@ -2,8 +2,8 @@
   <div class="ticket_list">
     <div>
       <ticket-item
-        v-for="ticket in tickets"
-        :key="ticket.id"
+        v-for="(ticket, index) in tickets"
+        :key="index"
         :ticket="ticket"
       />
     </div>
@@ -18,7 +18,7 @@ import { Tickets } from "@/types/ticketsTypes.interface";
 export default defineComponent({
   props: {
     tickets: {
-      type: [] as PropType<Tickets>,
+      type: Array as PropType<Tickets[]>,
     },
   },
   components: {

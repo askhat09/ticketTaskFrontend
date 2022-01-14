@@ -1,14 +1,13 @@
 <template>
-  <div
-    v-bind:class="{ 'check-filter': true, active: checked }"
-    v-on:click="checkFilter"
-  >
+  <div :class="{ 'check-filter': true, active: checked }" @click="checkFilter">
     <span class="checkbox"></span>
     <span class="check-filter-title">{{ title }}</span>
   </div>
 </template>
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
   props: ["title"],
   emits: ["check-filter"],
   data: () => ({
@@ -17,10 +16,9 @@ export default {
   methods: {
     checkFilter() {
       this.checked = !this.checked;
-      this.$emit("check-filter", this.checked);
     },
   },
-};
+});
 </script>
 
 <style lang="scss">

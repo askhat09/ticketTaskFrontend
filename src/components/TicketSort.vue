@@ -3,7 +3,7 @@
     <button
       v-for="sort in sortType"
       :key="sort.type"
-      :class="{ active: currentFilter === sort.type }"
+      :class="{ active: activeSort === sort.type }"
       @click="toggleFilter(sort.type)"
       type="button"
     >
@@ -16,6 +16,11 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
+  props: {
+    activeSort: {
+      type: String,
+    },
+  },
   data: () => {
     return {
       sortType: [
@@ -23,12 +28,10 @@ export default defineComponent({
         { type: "fastest", name: "Самый быстрый" },
         { type: "optimal", name: "Оптимальный" },
       ],
-      currentFilter: "",
     };
   },
   methods: {
     toggleFilter(type: string) {
-      this.currentFilter = type;
       this.$emit("sortByType", type);
     },
   },

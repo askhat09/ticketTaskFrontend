@@ -1,6 +1,6 @@
 export interface ticketsTypes {
   stop?: boolean;
-  tickets?: Tickets[];
+  tickets: Tickets[];
 }
 
 export interface Tickets {

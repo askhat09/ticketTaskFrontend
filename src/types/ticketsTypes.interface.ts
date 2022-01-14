@@ -1,9 +1,9 @@
 export interface ticketsTypes {
   stop?: boolean;
-  tickets?: Result[];
+  tickets?: Tickets[];
 }
 
-export interface Result {
+export interface Tickets {
   carrier: string;
   price: number;
   segments: Segments[];
@@ -14,5 +14,5 @@ export interface Segments {
   destination: string;
   duration: number;
   origin: string;
-  stops?: [];
+  stops: [];
 }

@@ -6,7 +6,7 @@
     <div class="app-content">
       <ticket-filter />
       <div class="app-list-wrapper">
-        <ticket-sort />
+        <ticket-sort @sortByType="sortByType" />
         <ticket-list v-if="data.tickets" :tickets="data.tickets" />
         <ticket-more />
       </div>
@@ -27,6 +27,40 @@ export default defineComponent({
     return {
       data: {} as ticketsTypes,
     };
+  },
+  methods: {
+    sortByType(type: string) {
+      switch (type) {
+        case "cheapest": {
+          this.data.tickets?.sort((current, next) => {
+            return current.price - next.price;
+          });
+          break;
+        }
+        case "fastest": {
+          this.data.tickets?.sort((current, next) => {
+            const totalTimeTo =
+              current.segments[0].duration + current.segments[1].duration;
+            const totalTimeFrom =
+              next.segments[0].duration + next.segments[1].duration;
+            return totalTimeTo - totalTimeFrom;
+          });
+          break;
+        }
+        default: {
+          // допустим что оптимальный - это будет сортировкой по количеству пересадок
+          this.data.tickets?.sort((current, next) => {
+            const totalTransferTo =
+              current.segments[0].stops.length +
+              current.segments[1].stops.length;
+            const totalTransferFrom =
+              next.segments[0].stops.length + next.segments[1].stops.length;
+            return totalTransferTo - totalTransferFrom;
+          });
+          break;
+        }
+      }
+    },
   },
   async mounted(): Promise<void> {
     const search = await fetch(`http://localhost:1234/search`);

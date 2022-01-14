@@ -56,12 +56,12 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { Result } from "@/types/ticketsTypes.interface";
+import { Tickets } from "@/types/ticketsTypes.interface";
 
 export default defineComponent({
   props: {
     ticket: {
-      type: [] as PropType<Result>,
+      type: [] as PropType<Tickets>,
     },
   },
   methods: {

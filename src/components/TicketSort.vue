@@ -1,13 +1,38 @@
 <template>
   <div class="ticket-select-group">
-    <button type="button">Самый дешевый</button>
-    <button type="button">Самый быстрый</button>
-    <button type="button">Оптимальный</button>
+    <button
+      v-for="sort in sortType"
+      :key="sort.type"
+      :class="{ active: currentFilter === sort.type }"
+      @click="toggleFilter(sort.type)"
+      type="button"
+    >
+      {{ sort.name }}
+    </button>
   </div>
 </template>
 
-<script>
-export default {};
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  data: () => {
+    return {
+      sortType: [
+        { type: "cheapest", name: "Самый дешевый" },
+        { type: "fastest", name: "Самый быстрый" },
+        { type: "optimal", name: "Оптимальный" },
+      ],
+      currentFilter: "",
+    };
+  },
+  methods: {
+    toggleFilter(type: string) {
+      this.currentFilter = type;
+      this.$emit("sortByType", type);
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -26,6 +51,7 @@ export default {};
     letter-spacing: 0.5px;
     line-height: 20px;
     text-transform: uppercase;
+    transition: 0.3s;
     cursor: pointer;
 
     @media screen and (max-width: 800px) {

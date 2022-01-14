@@ -23,15 +23,14 @@ import TicketFilter from "@/components/TicketFilter.vue";
 import TicketSort from "@/components/TicketSort.vue";
 import TicketList from "@/components/TicketList.vue";
 import TicketMore from "@/components/TicketMore.vue";
-import { ticketsTypes, Tickets } from "@/types/ticketsTypes.interface";
+import { ticketsTypes, Tickets, Filters } from "@/types/ticketsTypes.interface";
 
 export default defineComponent({
   data: () => {
     return {
       data: {} as ticketsTypes,
       filteredTickets: [] as Tickets[],
-      transferFilter: [] as number[],
-      filteredTicketsByTransfer: [] as (string | number)[],
+      transferFilter: {} as Filters,
       activeSort: "",
     };
   },
@@ -75,26 +74,27 @@ export default defineComponent({
       const setOfFilter = new Set(
         tickets?.map((item) => item.segments[0].stops.length)
       );
-      this.transferFilter = [...setOfFilter].sort();
+      setOfFilter.forEach((item) => {
+        this.transferFilter[item] = false;
+      });
     },
-    transferFilterHandler(amount: number | string) {
-      if (this.filteredTicketsByTransfer.includes(amount)) {
-        this.filteredTicketsByTransfer = this.filteredTicketsByTransfer.filter(
-          (item) => item !== amount
-        );
+    transferFilterHandler(type: any) {
+      if (type.name === "all") {
+        if (type.value === true) {
+          this.filteredTickets = this.data.tickets;
+        } else {
+          this.updateFilteredTickets();
+        }
+        //asd}
       } else {
-        this.filteredTicketsByTransfer.push(amount);
+        this.transferFilter[type.name] = !this.transferFilter[type.name];
+        this.updateFilteredTickets();
       }
-      this.updateFilteredTickets();
     },
     updateFilteredTickets() {
-      if (this.filteredTicketsByTransfer.includes("all")) {
-        this.filteredTickets = this.data.tickets;
-      } else {
-        this.filteredTickets = this.data.tickets.filter((item) =>
-          this.filteredTicketsByTransfer.includes(item.segments[0].stops.length)
-        );
-      }
+      this.filteredTickets = this.data.tickets.filter((item) => {
+        return this.transferFilter[item.segments[0].stops.length];
+      });
       this.sortByType(this.activeSort);
     },
   },

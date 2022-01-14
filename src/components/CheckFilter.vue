@@ -8,11 +8,19 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  props: ["title"],
-  emits: ["check-filter"],
-  data: () => ({
-    checked: false,
-  }),
+  props: {
+    title: {
+      type: String,
+    },
+    value: {
+      type: Boolean,
+    },
+  },
+  data: function () {
+    return {
+      checked: this.value,
+    };
+  },
   methods: {
     checkFilter() {
       this.checked = !this.checked;

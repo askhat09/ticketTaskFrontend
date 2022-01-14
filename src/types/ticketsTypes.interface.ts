@@ -16,3 +16,7 @@ export interface Segments {
   origin: string;
   stops: [];
 }
+
+export interface Filters {
+  [key: string]: boolean;
+}

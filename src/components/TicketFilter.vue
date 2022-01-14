@@ -3,12 +3,13 @@
     <div class="ticket-filter-wrapper">
       <h2>Количество пересадок</h2>
       <div class="filter-group">
-        <check-filter @click="filterChangeHandler('all')" :title="'Все'" />
+        <check-filter @click="toggleAll" :title="'Все'" :value="checkAll" />
         <check-filter
-          v-for="transfer in transferFilter"
-          :title="formatTransfer(transfer)"
-          :key="transfer"
-          @click="filterChangeHandler(transfer)"
+          v-for="(value, name, index) in transferFilter"
+          :title="formatTransfer(Number(name))"
+          :value="value"
+          :key="index"
+          @click="filterChangeHandler(name, value)"
         ></check-filter>
       </div>
     </div>
@@ -19,20 +20,27 @@
 import { defineComponent, PropType } from "vue";
 import CheckFilter from "@/components/CheckFilter.vue";
 import { formatTransfer } from "@/services/helper";
+import { Filters } from "@/types/ticketsTypes.interface";
 
 export default defineComponent({
   props: {
     transferFilter: {
-      type: Array as PropType<number[]>,
+      type: Array as PropType<Filters[]>,
     },
   },
   data() {
-    return {};
+    return {
+      checkAll: true,
+    };
   },
   methods: {
     formatTransfer,
-    filterChangeHandler(amount: number | string) {
-      this.$emit("transferFilterHandler", amount);
+    toggleAll() {
+      this.checkAll = !this.checkAll;
+      this.filterChangeHandler("all", this.checkAll);
+    },
+    filterChangeHandler(name: number | string, value: boolean) {
+      this.$emit("transferFilterHandler", { name, value });
     },
   },
   components: {

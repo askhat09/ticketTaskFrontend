@@ -53,15 +53,16 @@ export default defineComponent({
       border-color: #2196f3;
 
       &::after {
-        content: "";
-        border-color: #2196f3;
-        background-color: #2196f3;
         position: absolute;
-        width: 14px;
+        width: 13px;
         height: 14px;
         left: 3px;
-        top: 3px;
-        border-radius: 2px;
+        top: -1px;
+        content: "\2713";
+        font-weight: 700;
+        color: #2196f3;
+        font-size: 16px;
+        font-family: system-ui;
       }
     }
   }

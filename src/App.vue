@@ -7,7 +7,7 @@
         src="./assets/Logo.svg"
       />
     </div>
-    <div class="app-content">
+    <div class="app-content" v-if="!errorHappened">
       <ticket-filter
         :transferFilter="transferFilter"
         @transferFilterHandler="transferFilterHandler"
@@ -24,6 +24,7 @@
         />
       </div>
     </div>
+    <went-wrong v-else />
   </div>
 </template>
 
@@ -33,6 +34,7 @@ import TicketFilter from "@/components/TicketFilter.vue";
 import TicketSort from "@/components/TicketSort.vue";
 import TicketList from "@/components/TicketList.vue";
 import TicketMore from "@/components/TicketMore.vue";
+import WentWrong from "@/components/WentWrong.vue";
 import {
   ticketsTypes,
   Tickets,
@@ -51,6 +53,8 @@ export default defineComponent({
         current: 5,
         total: 0,
       } as Paginations,
+      // так как роутера нет придеться через дату редирект делать
+      errorHappened: false,
     };
   },
   methods: {
@@ -131,20 +135,26 @@ export default defineComponent({
   async mounted(): Promise<void> {
     const search = await fetch(`http://localhost:1234/search`);
     const searchResponse = await search.json();
-    const t = await fetch(
-      `http://localhost:1234/tickets?searchId=${searchResponse?.searchId}`
-    );
-    const response = await t.json();
-    this.data = response;
-    this.filteredTickets = response.tickets;
-    this.pagination.total = response.tickets.length;
-    this.getTransferFilter();
+    try {
+      const t = await fetch(
+        `http://localhost:1234/tickets?searchId=${searchResponse?.searchId}`
+      );
+      const response = await t.json();
+      this.data = response;
+      this.filteredTickets = response.tickets;
+      this.pagination.total = response.tickets.length;
+      this.getTransferFilter();
+    } catch (error) {
+      this.errorHappened = true;
+      console.log("For some sentry or logger", error);
+    }
   },
   components: {
     TicketFilter,
     TicketSort,
     TicketList,
     TicketMore,
+    WentWrong,
   },
 });
 </script>

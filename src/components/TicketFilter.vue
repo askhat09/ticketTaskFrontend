@@ -41,6 +41,7 @@ export default defineComponent({
     },
     filterChangeHandler(name: number | string, value: boolean) {
       this.$emit("transferFilterHandler", { name, value });
+      // double emits or some trick to check is allToggle true
     },
   },
   components: {

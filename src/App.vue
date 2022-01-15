@@ -1,7 +1,11 @@
 <template>
   <div class="app">
     <div class="app-header">
-      <img class="app-logo" src="./assets/Logo.svg" />
+      <img
+        class="app-logo"
+        :class="{ loading: true }"
+        src="./assets/Logo.svg"
+      />
     </div>
     <div class="app-content">
       <ticket-filter
@@ -10,8 +14,14 @@
       />
       <div class="app-list-wrapper">
         <ticket-sort @sortByType="sortByType" :activeSort="activeSort" />
-        <ticket-list :tickets="filteredTickets" />
-        <ticket-more />
+        <ticket-list
+          :tickets="filteredTickets"
+          :pagination="pagination.current"
+        />
+        <ticket-more
+          v-if="pagination.current < pagination.total"
+          @click="showMore"
+        />
       </div>
     </div>
   </div>
@@ -23,7 +33,12 @@ import TicketFilter from "@/components/TicketFilter.vue";
 import TicketSort from "@/components/TicketSort.vue";
 import TicketList from "@/components/TicketList.vue";
 import TicketMore from "@/components/TicketMore.vue";
-import { ticketsTypes, Tickets, Filters } from "@/types/ticketsTypes.interface";
+import {
+  ticketsTypes,
+  Tickets,
+  Filters,
+  Paginations,
+} from "@/types/ticketsTypes.interface";
 
 export default defineComponent({
   data: () => {
@@ -32,6 +47,10 @@ export default defineComponent({
       filteredTickets: [] as Tickets[],
       transferFilter: {} as Filters,
       activeSort: "",
+      pagination: {
+        current: 5,
+        total: 0,
+      } as Paginations,
     };
   },
   methods: {
@@ -54,7 +73,7 @@ export default defineComponent({
           });
           break;
         }
-        default: {
+        case "optimal": {
           // допустим что оптимальный - это будет сортировкой по количеству пересадок
           this.filteredTickets?.sort((current, next) => {
             const totalTransferTo =
@@ -82,10 +101,11 @@ export default defineComponent({
       if (type.name === "all") {
         if (type.value === true) {
           this.filteredTickets = this.data.tickets;
+          this.pagination.total = this.filteredTickets.length;
+          this.pagination.current = 5;
         } else {
           this.updateFilteredTickets();
         }
-        //asd}
       } else {
         this.transferFilter[type.name] = !this.transferFilter[type.name];
         this.updateFilteredTickets();
@@ -95,7 +115,12 @@ export default defineComponent({
       this.filteredTickets = this.data.tickets.filter((item) => {
         return this.transferFilter[item.segments[0].stops.length];
       });
+      this.pagination.total = this.filteredTickets.length;
+      this.pagination.current = 5;
       this.sortByType(this.activeSort);
+    },
+    showMore() {
+      this.pagination.current += 5;
     },
   },
   async mounted(): Promise<void> {
@@ -107,6 +132,7 @@ export default defineComponent({
     const response = await t.json();
     this.data = response;
     this.filteredTickets = response.tickets;
+    this.pagination.total = response.tickets.length;
     this.getTransferFilter();
   },
   components: {

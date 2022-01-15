@@ -1,11 +1,7 @@
 <template>
   <div class="ticket_list">
-    <div>
-      <ticket-item
-        v-for="(ticket, index) in tickets"
-        :key="index"
-        :ticket="ticket"
-      />
+    <div v-for="(ticket, index) in tickets" :key="index">
+      <ticket-item v-if="pagination > index" :ticket="ticket" />
     </div>
   </div>
 </template>
@@ -19,6 +15,9 @@ export default defineComponent({
   props: {
     tickets: {
       type: Array as PropType<Tickets[]>,
+    },
+    pagination: {
+      type: Number,
     },
   },
   components: {

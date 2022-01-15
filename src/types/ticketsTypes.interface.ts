@@ -20,3 +20,8 @@ export interface Segments {
 export interface Filters {
   [key: string]: boolean;
 }
+
+export interface Paginations {
+  total: number;
+  current: number;
+}

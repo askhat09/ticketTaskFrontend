@@ -97,17 +97,22 @@ export default defineComponent({
         this.transferFilter[item] = false;
       });
     },
-    transferFilterHandler(type: any) {
-      if (type.name === "all") {
-        if (type.value === true) {
+    transferFilterHandler(args: any) {
+      if (args.key === "all") {
+        if (args.checkAll === true) {
           this.filteredTickets = this.data.tickets;
           this.pagination.total = this.filteredTickets.length;
           this.pagination.current = 5;
         } else {
           this.updateFilteredTickets();
         }
+      } else if (args.checkAll === true) {
+        this.transferFilter[args.key] = !this.transferFilter[args.key];
+        this.filteredTickets = this.data.tickets;
+        this.pagination.total = this.filteredTickets.length;
+        this.pagination.current = 5;
       } else {
-        this.transferFilter[type.name] = !this.transferFilter[type.name];
+        this.transferFilter[args.key] = !this.transferFilter[args.key];
         this.updateFilteredTickets();
       }
     },

@@ -9,7 +9,7 @@
           :title="formatTransfer(Number(name))"
           :value="value"
           :key="index"
-          @click="filterChangeHandler(name, value)"
+          @click="filterChangeHandler(name)"
         ></check-filter>
       </div>
     </div>
@@ -37,11 +37,13 @@ export default defineComponent({
     formatTransfer,
     toggleAll() {
       this.checkAll = !this.checkAll;
-      this.filterChangeHandler("all", this.checkAll);
+      this.filterChangeHandler("all");
     },
-    filterChangeHandler(name: number | string, value: boolean) {
-      this.$emit("transferFilterHandler", { name, value });
-      // double emits or some trick to check is allToggle true
+    filterChangeHandler(name: number | string) {
+      this.$emit("transferFilterHandler", {
+        key: name,
+        checkAll: this.checkAll,
+      });
     },
   },
   components: {

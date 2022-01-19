@@ -72,6 +72,7 @@ export default defineComponent({
     padding: 20px;
 
     font-size: 12px;
+    font-weight: 600;
     text-transform: uppercase;
   }
 

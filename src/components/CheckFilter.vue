@@ -80,6 +80,7 @@ export default defineComponent({
   .check-filter-title {
     user-select: none;
     vertical-align: top;
+    font-weight: 400;
     line-height: 1.6rem;
     padding-left: 0.45rem;
   }

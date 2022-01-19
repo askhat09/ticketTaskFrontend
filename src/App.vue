@@ -160,9 +160,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@import "./assets/styles/main.css";
 * {
   margin: 0;
   padding: 0;
+
+  font-family: "Open Sans";
 }
 
 body {
@@ -172,8 +175,6 @@ body {
 .app {
   max-width: 754px;
   margin: 0 auto;
-
-  font-family: "Open Sans", Helvetica, Arial, sans-serif;
 
   @media screen and (max-width: 800px) {
     padding: 0 15px;

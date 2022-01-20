@@ -25,7 +25,7 @@ import { Filters } from "@/types/ticketsTypes.interface";
 export default defineComponent({
   props: {
     transferFilter: {
-      type: Array as PropType<Filters[]>,
+      type: Object as PropType<Filters[]>,
     },
   },
   data() {

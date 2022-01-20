@@ -14,7 +14,7 @@ export interface Segments {
   destination: string;
   duration: number;
   origin: string;
-  stops: [];
+  stops: string[];
 }
 
 export interface Filters {

@@ -4,7 +4,6 @@
       <div class="ticket-price">{{ formatCurrency(ticket.price) }} P</div>
       <div class="ticket-brand">
         {{ ticket.carrier }}
-        <!-- <img src="../assets/s7logo.svg" alt="s7" /> -->
       </div>
     </div>
     <div class="ticket_row">

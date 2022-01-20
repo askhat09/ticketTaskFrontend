@@ -1,6 +1,8 @@
 <template>
   <div :class="{ 'check-filter': true, active: checked }" @click="checkFilter">
-    <span class="checkbox"></span>
+    <span class="checkbox">
+      <img v-if="checked" src="../assets/shape.svg" />
+    </span>
     <span class="check-filter-title">{{ title }}</span>
   </div>
 </template>
@@ -51,30 +53,24 @@ export default defineComponent({
   &.active {
     .checkbox {
       border-color: #2196f3;
-
-      &::after {
-        position: absolute;
-        width: 13px;
-        height: 14px;
-        left: 3px;
-        top: -1px;
-        content: "\2713";
-        font-weight: 700;
-        color: #2196f3;
-        font-size: 16px;
-        font-family: system-ui;
-      }
     }
   }
 
   .checkbox {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
-    width: 18px;
-    height: 18px;
+    box-sizing: border-box;
+    width: 20px;
+    height: 20px;
     border: 1px solid #9abbce;
-    border-radius: 3px;
+    border-radius: 2px;
     user-select: none;
+
+    img {
+      width: 12px;
+    }
   }
 
   .check-filter-title {
